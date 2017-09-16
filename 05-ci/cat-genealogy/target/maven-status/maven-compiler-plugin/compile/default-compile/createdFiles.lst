@@ -1,0 +1,8 @@
+com/joshcummings/cats/model/ParallelDescendentCountingCat.class
+com/joshcummings/cats/CatGenealogy.class
+com/joshcummings/cats/model/AbstractCat.class
+com/joshcummings/cats/model/DescendentCountingCat.class
+com/joshcummings/cats/model/DescendentKnowingCat.class
+com/joshcummings/cats/service/SimpleCatService.class
+com/joshcummings/cats/model/Cat.class
+com/joshcummings/cats/service/CatService.class

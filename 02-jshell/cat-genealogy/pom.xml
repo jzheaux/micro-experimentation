@@ -53,7 +53,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5</version>
                 <configuration>
-                    <source>${javac.tacd carget}</source>
+                    <source>${javac.target}</source>
                     <target>${javac.target}</target>
                 </configuration>
                 <executions>

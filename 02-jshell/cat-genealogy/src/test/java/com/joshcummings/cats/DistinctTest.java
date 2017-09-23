@@ -110,14 +110,14 @@ public class DistinctTest {
 	    long start = System.nanoTime();
 	    String testName = Thread.currentThread().getStackTrace()[2].getMethodName();
 		for ( int i = 0; i < REPS; i++ ) {
-		    //if ( i > 0 && i % 100 == 0 ) {
-		    //    System.out.printf("Took %f seconds so far, executed %d iterations%n", (System.nanoTime() - start) / 1_000_000_000d, i);
-		    //}
+		    if ( i > 0 && i % 100 == 0 ) {
+		        System.out.printf("Took %f seconds so far, executed %d iterations%n", (System.nanoTime() - start) / 1_000_000_000d, i);
+		    }
 			r.run();
-			//addToReport(testName, i, start);
+			addToReport(testName, i, start);
 		}
 		double end = (System.nanoTime() - start) / 1_000_000_000d;
 		System.out.printf("%s took %f seconds%n", testName, end);
-		//report.put(testName, end);
+		report.put(testName, end);
 	}
 }

@@ -1,7 +1,6 @@
 package com.joshcummings.cats;
 
 import static spark.Spark.*;
-import java.util.Collections;
 import com.google.gson.Gson;
 
 import com.joshcummings.cats.model.Cat;

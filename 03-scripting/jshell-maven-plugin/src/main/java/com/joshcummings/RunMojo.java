@@ -22,40 +22,30 @@ import jdk.jshell.SnippetEvent;
 import jdk.jshell.execution.JdiExecutionControlProvider;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.*;
 
 import java.io.Console;
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * Goal which launches JShell using the project's classpath
  */
-@Mojo( name = "run", defaultPhase = LifecyclePhase.COMPILE )
+@Mojo( name = "run", defaultPhase = LifecyclePhase.COMPILE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class RunMojo
     extends AbstractMojo
 {
     @Parameter( defaultValue = "${project.artifactId}", property = "serviceName", required = false )
     private String serviceName;
 
-    /**
-     * Location of the output directory.
-     */
-    @Parameter( defaultValue = "${project.build.directory}", property = "outputDir", required = true )
-    private File outputDirectory;
+    @Parameter( defaultValue = "${project.runtimeClasspathElements}" )
+    private List<String> classpath;
 
     public void execute()
         throws MojoExecutionException
     {
-        File f = outputDirectory;
-
-        File uberJar = new File(f, serviceName + ".jar");
-
-        if ( uberJar.exists() ) {
-            this.getLog().info("Found target, will get all classes");
+        try {
+            this.getLog().debug("Using " + classpath + " as the classpath for JShell session");
 
             Console console = System.console();
 
@@ -64,7 +54,9 @@ public class RunMojo
                             new JdiExecutionControlProvider(),
                             new HashMap<>()).build()) {
 
-                js.addToClasspath(uberJar.getAbsolutePath());
+                for ( String classpathElement : classpath ) {
+                    js.addToClasspath(classpathElement);
+                }
 
                 do {
                     System.out.print(serviceName + "> ");
@@ -101,7 +93,7 @@ public class RunMojo
                             sb.append(e.snippet().source());
 
                             System.out.println(sb);
-                            if ( e.exception() != null ) {
+                            if (e.exception() != null) {
                                 System.out.println(e.exception().getMessage());
                             }
                             if (e.value() != null) {
@@ -115,6 +107,9 @@ public class RunMojo
                 } while (true);
             }
 
+        }/* catch (DependencyResolutionRequiredException e) {
+            e.printStackTrace();
+        } */finally {
             System.out.println("\nGoodbye");
         }
     }

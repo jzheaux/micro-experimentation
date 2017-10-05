@@ -5,17 +5,19 @@ public class DescendentKnowingCat extends AbstractCat {
     
     public DescendentKnowingCat(String name, Cat dad, Cat mom) {
         super(name, dad, mom);
+        System.out.println("Invoking knowing cat constructor with " +
+          name + ":" + dad + ":" + mom);
     }
     
     protected long descendentCount;
     
-    public void addChild(AbstractCat child) {
+    public void addChild(Cat child) {
         if ( children.add(child) ) {
             incrementDescendents();
         }
     }
     
-    public void removeChild(AbstractCat child) {
+    public void removeChild(Cat child) {
         if ( children.remove(child) ) {
             decrementDescendents();
         }

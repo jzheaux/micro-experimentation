@@ -8,13 +8,13 @@ import java.util.stream.StreamSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 
 public class SimpleCatService implements CatService {
-    private final Map<Long, Cat> cats = new HashMap<>();
+    private final Map<Long, Cat> cats = new ConcurrentHashMap<>();
     
     private final Class<? extends Cat> defaultCatType;
     

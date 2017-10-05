@@ -2,13 +2,17 @@ package com.joshcummings.cats.model;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractCat implements Cat {
     private Long id;
     
-    protected Cat mom;
-    protected Cat dad;
-    protected Set<Cat> children = new HashSet<>();
+    protected transient Cat mom;
+    protected transient Cat dad;
+    protected Set<Cat> children = 
+            Collections.newSetFromMap(
+                new ConcurrentHashMap<>());
     
     private String name;
     

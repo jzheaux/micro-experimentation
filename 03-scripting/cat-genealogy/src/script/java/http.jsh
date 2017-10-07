@@ -65,3 +65,14 @@ CompletableFuture<?> addMany(int howMany) {
   return CompletableFuture.allOf(futures)
            .thenAccept(r -> System.out.println("Added " + (howMany - 1) + " cats"));
 }
+
+CompletableFuture<?> cat(String name, String dad, String mom) {
+  return add(name, dad, mom);
+}
+
+CompletableFuture<?> orphan(String name) {
+  return postAsync(
+              String.format("/cat"),
+              String.format("{ 'name' : '%s' }", name),
+              addCatsClient);
+}

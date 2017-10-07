@@ -20,7 +20,15 @@ public class CatGenealogy {
         CatGenealogy cg = new CatGenealogy();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
-        port(8080);
+        Integer port = 8080;
+        
+        try {
+            port = Integer.parseInt(System.getProperty("port"));
+        } catch ( Exception e ) {
+            System.out.println("No port specified or found, using " + port);
+        }
+        
+        port(port);
         
         get("/cat/list", (req, res) -> {
             if ( req.params("name") != null ) {

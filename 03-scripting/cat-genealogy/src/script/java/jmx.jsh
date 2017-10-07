@@ -7,13 +7,17 @@ JMXConnector jmxc = JMXConnectorFactory.connect(url, null);
 
 MBeanServerConnection mbsc =  jmxc.getMBeanServerConnection();
 
-Object getValue(String mBeanName, String attributeName, String subAttributeName) throws Exception {
-  ObjectName o = new ObjectName(mBeanName);
-  Object response = mbsc.getAttribute(o, attributeName);
-  if ( response instanceof CompositeDataSupport ) {
-    return ((CompositeDataSupport)response).get(subAttributeName);
-  } else if ( response instanceof SimpleType ) {
-    return ((SimpleType)response).readResolve();
+Object getValue(String mBeanName, String attributeName, String subAttributeName) {
+  try {
+    ObjectName o = new ObjectName(mBeanName);
+    Object response = mbsc.getAttribute(o, attributeName);
+    if ( response instanceof CompositeDataSupport ) {
+      return ((CompositeDataSupport)response).get(subAttributeName);
+    } else if ( response instanceof SimpleType ) {
+      return ((SimpleType)response).readResolve();
+    }
+    return response;
+  } catch ( Exception e ) {
+    throw new RuntimeException(e);
   }
-  return response;
 }

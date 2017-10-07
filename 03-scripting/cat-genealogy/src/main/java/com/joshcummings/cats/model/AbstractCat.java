@@ -8,9 +8,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractCat implements Cat {
     private Long id;
     
-    protected transient Cat mom;
-    protected transient Cat dad;
-    protected Set<Cat> children = 
+    protected Cat mom;
+    protected Cat dad;
+    protected transient Set<Cat> children = 
             Collections.newSetFromMap(
                 new ConcurrentHashMap<>());
     

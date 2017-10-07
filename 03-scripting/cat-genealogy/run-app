@@ -1,0 +1,6 @@
+java -cp target/cat-genealogy.jar -Dcom.sun.management.jmxremote \
+ -Dcom.sun.management.jmxremote.port=18080 \
+ -Dcom.sun.management.jmxremote.local.only=false \
+ -Dcom.sun.management.jmxremote.authenticate=false \
+ -Dcom.sun.management.jmxremote.ssl=false \
+ com.joshcummings.cats.CatGenealogy

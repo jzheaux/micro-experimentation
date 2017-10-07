@@ -1,11 +1,13 @@
 package com.joshcummings.cats;
 
 import static spark.Spark.*;
-import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.gson.Gson;
 import com.joshcummings.cats.model.Cat;
 import com.joshcummings.cats.model.DescendentKnowingCat;
-
 import com.joshcummings.cats.service.CatService;
 import com.joshcummings.cats.service.SimpleCatService;
 
@@ -22,6 +24,12 @@ public class CatGenealogy {
                 return cg.catService.findCat(req.params("name"));
             }
             return cg.catService.listCats();
+        }, gson::toJson);
+        
+        get("/cat/count", (req, res) -> {
+            Map<String, Integer> result = new HashMap<>();
+            result.put("count", cg.catService.listCats().size());
+            return result;
         }, gson::toJson);
         
         post("/cat", (req, res) -> {

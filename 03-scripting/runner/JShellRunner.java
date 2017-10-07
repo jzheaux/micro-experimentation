@@ -33,6 +33,8 @@ public class JShellRunner {
       if ( snippet.startsWith("/") ) {
           if ( snippet.startsWith("/open") ) {
               parseFile(js, snippet.split(" ")[1]);
+          } else if ( snippet.startsWith("/env --class-path") ) {
+              js.addToClasspath(snippet.split(" ")[2]);
           }
       } else {
           SourceCodeAnalysis.CompletionInfo info = analysis.analyzeCompletion(snippet);
@@ -61,16 +63,16 @@ public class JShellRunner {
       String program = programArgs.get(0);
 
       JShell.Builder builder = JShell.builder()
-              .remoteVMOptions(runner.modules.stream().map(m -> "--add-modules=" + m).toArray(i -> new String[runner.modules.size()]))
-              .compilerOptions(runner.modules.stream().map(m -> "--add-modules=" + m).toArray(i -> new String[runner.modules.size()]));
+              .remoteVMOptions("--add-modules=jdk.incubator.httpclient")
+              .compilerOptions("--add-modules=jdk.incubator.httpclient");
 
       try ( JShell js = builder.build() )  {
-        js.onSnippetEvent(event -> {
+/*        js.onSnippetEvent(event -> {
             if ( event.value() != null ) {
                 System.out.println(event.value());
             }
         });
-
+*/
         if ( runner.classpath != null ) {
           js.addToClasspath(runner.classpath);
         }

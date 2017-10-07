@@ -15,9 +15,9 @@ String get(String path, HttpClient client) {
       new URI(endpoint + path))
            .build();
 
-    return System.out.println(
-             client.send(request, HttpResponse.BodyHandler.asString())
-               .body());
+    return
+            client.send(request, HttpResponse.BodyHandler.asString())
+               .body();
   } catch ( Exception e ) {
     throw new RuntimeException(e);
   }
@@ -55,13 +55,13 @@ CompletableFuture<?> add(String name, String dad, String mom) {
 
 CompletableFuture<?> addMany(int howMany) {
   CompletableFuture[] futures = new CompletableFuture[howMany - 1];
-  for ( int i = howMany; i > 0; i-- ) {
+  for ( int i = howMany - 1; i > 0; i-- ) {
     String cat = "Cat" + i;
     String dad = "Cat" + 2*i;
     String mom = "Cat" + ( 2*i + 1 );
-    futures[howMany - i] = add(cat, dad, mom);
+    futures[howMany - i - 1] = add(cat, dad, mom);
   }
 
-  return CompletableFuture.allOf(future)
+  return CompletableFuture.allOf(futures)
            .thenAccept(r -> System.out.println("Added " + (howMany - 1) + " cats"));
 }

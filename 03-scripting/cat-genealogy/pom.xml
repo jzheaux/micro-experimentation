@@ -48,11 +48,12 @@
 
     <build>
         <plugins>
+            <!-- Make sure to build the jshell plugin first!
             <plugin>
                 <groupId>com.joshcummings</groupId>
                 <artifactId>jshell-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
-            </plugin>
+            </plugin> -->
             <plugin>    
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

@@ -8,13 +8,13 @@ import java.util.stream.StreamSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 
 public class SimpleCatService implements CatService {
-    private final Map<Long, Cat> cats = new HashMap<>();
+    private final Map<Long, Cat> cats = new ConcurrentHashMap<>();
     
     private final Class<? extends Cat> defaultCatType;
     
@@ -77,13 +77,19 @@ public class SimpleCatService implements CatService {
     }
     
     @Override
-    public void removeCat(Long id) {
+    public Cat removeCat(Long id) {
         Cat cat = findCat(id);
         Cat mom = cat.getMom();
         Cat dad = cat.getDad();
         mom.removeChild(cat);
         dad.removeChild(cat);
         cats.remove(cat.getId());
+        return cat;
+    }
+    
+    @Override
+    public void removeAll() {
+        cats.clear();
     }
     
     @Override

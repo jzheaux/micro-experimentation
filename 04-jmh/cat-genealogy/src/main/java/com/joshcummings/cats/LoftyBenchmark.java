@@ -11,35 +11,64 @@ public class LoftyBenchmark {
         System.out.printf("%s ran %f ops/ms%n", testName, times / end);
     }
 
-   /* private static double sqrt(double what) {
-        double guess = what / 2;
-        double lastguess = what;
-        for (int i = 0; i < 100 && lastguess != guess; i++) {
-            lastguess = guess;
-            guess = (guess + what / guess) / 2;
-        }
-        return guess;
-    }*/
-
+    static double factor = 0.5;
+    
     private static double sqrt(double what) {
-        return Math.exp(0.5 * Math.log(what));
+        return Math.exp(factor * Math.log(what));
     }
     
-    private static void testSqrt() {
-        runOverAndOver(100_000_000, () -> sqrt(10));
+    private static double testSqrt() {
+        double[] placeholder = new double[1];
+        runOverAndOver(100_000_000, () -> { placeholder[0] = sqrt(10); });
+        return placeholder[0];
     }
     
-    private static void testJavaSqrt() {
-        runOverAndOver(100_000_000, () -> Math.sqrt(10));
+    static double dummy = 1.0;
+    
+    private static double javaSqrt(double what) {
+        return Math.sqrt(dummy * what);
     }
     
-    private static void testConstant() {
-        runOverAndOver(100_000_000, () -> { int i  = 10; });
+    private static double testJavaSqrt() {
+        double[] placeholder = new double[1];
+        runOverAndOver(100_000_000, () -> { placeholder[0] = javaSqrt(10); });
+        return placeholder[0];
+    }
+    
+    static double constant = 10.0;
+    
+    private static double constant() {
+        return constant;
+    }
+    
+    private static double testConstant() {
+        double[] placeholder = new double[1];
+        runOverAndOver(100_000_000, () -> { placeholder[0] = constant(); });
+        return placeholder[0];
+    }
+    
+    private static void nothing() {}
+    
+    private static void testNothing() {
+        runOverAndOver(100_000_000, () -> nothing());
     }
     
     public static void main(String[] args) {
-        testSqrt(); 
-        testJavaSqrt();
-        testConstant();
+        if ( args.length == 1 ) {
+            if ( "sqrt".equals(args[0]) ) {
+                testSqrt(); 
+            } else if ( "javasqrt".equals(args[0]) ) {
+                testJavaSqrt();                
+            } else if ( "constant".equals(args[0]) ) {
+                testConstant();
+            } else {
+                testNothing();
+            }
+        } else {
+            testSqrt();
+            testJavaSqrt();
+            testConstant();
+            testNothing();
+        }
     }
 }

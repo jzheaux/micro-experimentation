@@ -1,4 +1,4 @@
-package com.joshcummings.cats;
+package com.joshcummings.cats.three;
 
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
@@ -11,8 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.junit.Test;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -25,6 +23,8 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+
+import com.joshcummings.cats.CatGenealogy;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
@@ -41,9 +41,16 @@ public class StartupTest {
         return new CatGenealogy();
     }
 
-    @Test
+   // @Test
     public void runBenchmarks() throws RunnerException {
-        Options opt = new OptionsBuilder().include(".*Test").forks(1).jvmArgs("-Xmx256M").build();
+        Options opt = new OptionsBuilder()
+            .shouldFailOnError(true)
+            .include(".*three.*Test")
+            .forks(1)
+            .jvmArgs("-Xmx256M")
+            .output("/dev/null")
+            .result("/dev/null")
+            .build();
 
         Collection<RunResult> results = new Runner(opt).run();
 
@@ -51,7 +58,6 @@ public class StartupTest {
     }
 
     protected void publishResults(Collection<RunResult> results) {
-        // Construct a new Jest client according to configuration via factory
         JestClientFactory factory = new JestClientFactory();
         factory.setHttpClientConfig(new HttpClientConfig.Builder("http://localhost:9200").multiThreaded(true).build());
         JestClient client = factory.getObject();

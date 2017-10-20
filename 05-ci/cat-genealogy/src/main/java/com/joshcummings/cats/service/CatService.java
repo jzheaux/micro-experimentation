@@ -11,6 +11,7 @@ public interface CatService {
     Cat addCat(Cat cat);
     Cat addCat(String name, Cat dad, Cat mom);
     Cat removeCat(Long id);
+    void removeAll();
     
     Collection<Cat> findCat(String name);
     Cat findCat(long id);

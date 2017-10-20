@@ -88,6 +88,11 @@ public class SimpleCatService implements CatService {
     }
     
     @Override
+    public void removeAll() {
+        cats.clear();
+    }
+    
+    @Override
     public Collection<Cat> listCats() {
         return cats.values();
     }
